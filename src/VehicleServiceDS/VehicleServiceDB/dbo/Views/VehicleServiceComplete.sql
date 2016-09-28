@@ -2,37 +2,196 @@
 AS
 SELECT        dbo.ServiceOrder.ServiceOrderId, dbo.ServiceOrder.RequestedDate, dbo.ServiceOrder.StartDate, dbo.ServiceOrder.EndDate, dbo.ServiceOrder.VehicleFk, dbo.ServiceOrder.ServiceOrderStatusFk, 
                          dbo.ServiceOrder.InvoiceFk, dbo.ServiceOrder.AutomotiveTechnicianLeadFk, dbo.Invoice.InvoiceId, dbo.Invoice.InvoiceNumber, dbo.Invoice.Taxes, dbo.Invoice.Value, dbo.Invoice.InvoicingDate, 
-                         dbo.AutomotiveTechnicianLead.AutomotiveTechnicianLeadId, dbo.AutomotiveTechnicianLead.Name, dbo.ServiceOrderStatus.ServiceOrderStatusId, dbo.ServiceOrderStatus.Name AS ServiceOrderStatusName, 
-                         dbo.ServiceOrderStatus.Description
+                         dbo.AutomotiveTechnicianLead.AutomotiveTechnicianLeadId, dbo.AutomotiveTechnicianLead.Name, dbo.ServiceOrderHistory.ServiceOrderHistoryId, dbo.ServiceOrderHistory.Date, 
+                         dbo.ServiceOrderHistory.InitialStatusFK, dbo.ServiceOrderHistory.FinalStatusFk, dbo.ServiceOrderHistory.ServiceOrderFk, dbo.Vehicle.VehicleId, dbo.Vehicle.PlateNumber, dbo.Vehicle.LastServiceDate, 
+                         dbo.Vehicle.VehicleModelFk, dbo.Vehicle.CustomerFk, dbo.VehicleModel.VehicleModelId, dbo.VehicleModel.Model, dbo.VehicleModel.VehicleBrandFk, dbo.VehicleBrand.VehicleBrandId, dbo.VehicleBrand.Brand, 
+                         dbo.Customer.CustomerId, dbo.Customer.Name AS CustomerName, dbo.Customer.Address, dbo.Customer.PhoneNumer, dbo.ServiceOrderCategory.ServiceOrderCategoryId, dbo.ServiceOrderCategory.Comments, 
+                         dbo.ServiceOrderCategory.CategoryFk, dbo.ServiceOrderCategory.ServiceOrderFk AS ServiceOrderCategoryServieOrderFk, dbo.ServiceOrderCategory.ServiceOrderCategoryStatusFk, 
+                         dbo.ServiceOrderCategory.AutomotiveTechnicianFk, dbo.Category.CategoryId, dbo.Category.Category, dbo.AutomotiveTechnician.AutomotiveTechnicianId, dbo.AutomotiveTechnician.Name AS TechnicianName, 
+                         dbo.ServiceOrderCategoryHistory.ServiceOrderCategoryHistoryId, dbo.ServiceOrderCategoryHistory.Date AS ServiceOrderCategoryHistoryDate, 
+                         dbo.ServiceOrderCategoryHistory.InitialStatusFk AS ServiceOrderCategoryHistoryInitialStatusFk, dbo.ServiceOrderCategoryHistory.FinalStatusFk AS ServiceOrderCategoryHistoryFinalStatusFk, 
+                         dbo.ServiceOrderCategoryHistory.ServiceOrderCategoryFk, dbo.OrderCategoryDetail.OrderCategoryDetailId, dbo.OrderCategoryDetail.Comments AS OrderCategoryDetailComments, 
+                         dbo.OrderCategoryDetail.Findings, dbo.OrderCategoryDetail.StartDate AS OrderCategoryDetailStartDate, dbo.OrderCategoryDetail.EnDate AS OrderCategoryDetailEndDate, 
+                         dbo.OrderCategoryDetail.OrderCategoryDetailStatusFk, dbo.OrderCategoryDetail.ServiceOrderCategoryFk AS OrderCategoryDetailServiceOrderCategoryFk, 
+                         dbo.OrderCategoryDetailHistory.OrderCategoryDetailHitoryId, dbo.OrderCategoryDetailHistory.Date AS OrderCategoryDetailHistoryDate, 
+                         dbo.OrderCategoryDetailHistory.InitialStatusFk AS OrderCategoryDetailHistoryInitialStatusFk, dbo.OrderCategoryDetailHistory.FinalStatusFk AS OrderCategoryDetailHistoryFinalStatusFk, 
+                         dbo.OrderCategoryDetailHistory.OrderCategoryDetailFk, dbo.PartManteinance.PartManteinanceId, dbo.PartManteinance.SerialNumber, dbo.PartManteinance.Comments AS PartManteinanceComments, 
+                         dbo.PartManteinance.OrderCategoryDetailFk AS PartManteinanceOrderCatgoryDetailFk, dbo.PartManteinance.ParfFk, dbo.PartReplacement.PartReplacementId, 
+                         dbo.PartReplacement.SerialNumber AS PartReplacementSerialNumber, dbo.PartReplacement.Comments AS PartReplacementComments, 
+                         dbo.PartReplacement.OrderCategoryDetailFk AS PartReplacementOrderCategoryDetalFk, dbo.PartReplacement.PartFk
 FROM            dbo.ServiceOrder INNER JOIN
                          dbo.Invoice ON dbo.ServiceOrder.InvoiceFk = dbo.Invoice.InvoiceId INNER JOIN
                          dbo.AutomotiveTechnicianLead ON dbo.ServiceOrder.AutomotiveTechnicianLeadFk = dbo.AutomotiveTechnicianLead.AutomotiveTechnicianLeadId INNER JOIN
-                         dbo.ServiceOrderStatus ON dbo.ServiceOrder.ServiceOrderStatusFk = dbo.ServiceOrderStatus.ServiceOrderStatusId
+                         dbo.ServiceOrderHistory ON dbo.ServiceOrder.ServiceOrderId = dbo.ServiceOrderHistory.ServiceOrderFk INNER JOIN
+                         dbo.Vehicle ON dbo.ServiceOrder.VehicleFk = dbo.Vehicle.VehicleId INNER JOIN
+                         dbo.VehicleModel ON dbo.Vehicle.VehicleModelFk = dbo.VehicleModel.VehicleModelId INNER JOIN
+                         dbo.VehicleBrand ON dbo.VehicleModel.VehicleBrandFk = dbo.VehicleBrand.VehicleBrandId INNER JOIN
+                         dbo.Customer ON dbo.Vehicle.CustomerFk = dbo.Customer.CustomerId INNER JOIN
+                         dbo.ServiceOrderCategory ON dbo.ServiceOrder.ServiceOrderId = dbo.ServiceOrderCategory.ServiceOrderFk INNER JOIN
+                         dbo.Category ON dbo.ServiceOrderCategory.CategoryFk = dbo.Category.CategoryId INNER JOIN
+                         dbo.AutomotiveTechnician ON dbo.ServiceOrderCategory.AutomotiveTechnicianFk = dbo.AutomotiveTechnician.AutomotiveTechnicianId INNER JOIN
+                         dbo.ServiceOrderCategoryHistory ON dbo.ServiceOrderCategory.ServiceOrderCategoryId = dbo.ServiceOrderCategoryHistory.ServiceOrderCategoryFk INNER JOIN
+                         dbo.OrderCategoryDetail ON dbo.ServiceOrderCategory.ServiceOrderCategoryId = dbo.OrderCategoryDetail.ServiceOrderCategoryFk INNER JOIN
+                         dbo.OrderCategoryDetailHistory ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.OrderCategoryDetailHistory.OrderCategoryDetailFk INNER JOIN
+                         dbo.PartManteinance ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartManteinance.OrderCategoryDetailFk INNER JOIN
+                         dbo.PartReplacement ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartReplacement.OrderCategoryDetailFk
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 3, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N' End
-   Begin CriteriaPane = 
-      Begin ColumnWidths = 11
-         Column = 1440
-         Alias = 900
-         Table = 2010
-         Output = 720
-         Append = 1400
-         NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
-         GroupBy = 1350
-         Filter = 1350
-         Or = 1350
-         Or = 1350
-         Or = 1350
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'          End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "Customer"
+            Begin Extent = 
+               Top = 234
+               Left = 247
+               Bottom = 364
+               Right = 417
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "ServiceOrderCategory"
+            Begin Extent = 
+               Top = 234
+               Left = 455
+               Bottom = 364
+               Right = 703
+            End
+            DisplayFlags = 280
+            TopColumn = 2
+         End
+         Begin Table = "Category"
+            Begin Extent = 
+               Top = 234
+               Left = 741
+               Bottom = 330
+               Right = 911
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "AutomotiveTechnician"
+            Begin Extent = 
+               Top = 366
+               Left = 38
+               Bottom = 462
+               Right = 258
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "ServiceOrderCategoryHistory"
+            Begin Extent = 
+               Top = 390
+               Left = 296
+               Bottom = 520
+               Right = 548
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "OrderCategoryDetail"
+            Begin Extent = 
+               Top = 390
+               Left = 586
+               Bottom = 520
+               Right = 827
+            End
+            DisplayFlags = 280
+            TopColumn = 3
+         End
+         Begin Table = "OrderCategoryDetailHistory"
+            Begin Extent = 
+               Top = 462
+               Left = 38
+               Bottom = 592
+               Right = 278
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "PartManteinance"
+            Begin Extent = 
+               Top = 522
+               Left = 316
+               Bottom = 652
+               Right = 525
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "PartReplacement"
+            Begin Extent = 
+               Top = 522
+               Left = 563
+               Bottom = 652
+               Right = 772
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
       End
    End
-End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+      Begin ColumnWidths = 78
+         Width = 284
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1155
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 15', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
 
 GO
@@ -103,7 +262,7 @@ Begin DesignProperties =
    End
    Begin DiagramPane = 
       Begin Origin = 
-         Top = -96
+         Top = -576
          Left = 0
       End
       Begin Tables = 
@@ -137,48 +296,100 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "ServiceOrderStatus"
+         Begin Table = "ServiceOrderHistory"
             Begin Extent = 
                Top = 102
                Left = 532
-               Bottom = 215
-               Right = 730
+               Bottom = 232
+               Right = 736
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "Vehicle"
+            Begin Extent = 
+               Top = 102
+               Left = 774
+               Bottom = 232
+               Right = 947
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "VehicleModel"
+            Begin Extent = 
+               Top = 138
+               Left = 38
+               Bottom = 251
+               Right = 209
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-      End
-   End
-   Begin SQLPane = 
-   End
-   Begin DataPane = 
-      Begin ParameterDefaults = ""
-      End
-      Begin ColumnWidths = 24
-         Width = 284
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1155
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-      End
+         Begin Table = "VehicleBrand"
+            Begin Extent = 
+               Top = 138
+               Left = 247
+               Bottom = 234
+               Right = 417
   ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N'00
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 2520
+         Alias = 900
+         Table = 2010
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
 
