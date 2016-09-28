@@ -71,7 +71,7 @@ BEGIN
 					,DATEADD(day,3,GETDATE())
 					,@vehicleFk
 					,1
-					,NULL
+					,@idInvoice
 					,@technicialLeadFk)
 
 		SELECT @idServiceOrder = SCOPE_IDENTITY()
@@ -280,6 +280,12 @@ BEGIN
 	BEGIN CATCH
 		ROLLBACK TRANSACTION NewServiceOrder
 
-		SELECT ERROR_MESSAGE()
+		SELECT 
+        ERROR_NUMBER() AS ErrorNumber,
+        ERROR_SEVERITY() AS ErrorSeverity,
+        ERROR_STATE() as ErrorState,
+        ERROR_PROCEDURE() as ErrorProcedure,
+        ERROR_LINE() as ErrorLine,
+        ERROR_MESSAGE() as ErrorMessage;
 	END CATCH  
 END
