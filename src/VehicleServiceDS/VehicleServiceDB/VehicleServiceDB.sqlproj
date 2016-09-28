@@ -63,6 +63,8 @@
     <Folder Include="DataBase\dbo" />
     <Folder Include="DataBase\dbo\Stored Procedures" />
     <Folder Include="DataBase\dbo\Tables" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="DataBase\dbo\Stored Procedures\CreateServiceOrder.sql" />
@@ -87,5 +89,6 @@
     <Build Include="DataBase\dbo\Tables\Vehicle.sql" />
     <Build Include="DataBase\dbo\Tables\VehicleBrand.sql" />
     <Build Include="DataBase\dbo\Tables\VehicleModel.sql" />
+    <Build Include="dbo\Views\VehicleServiceComplete.sql" />
   </ItemGroup>
 </Project>
