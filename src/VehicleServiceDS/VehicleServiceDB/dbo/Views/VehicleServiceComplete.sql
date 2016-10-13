@@ -18,7 +18,8 @@ SELECT        dbo.ServiceOrder.ServiceOrderId, dbo.ServiceOrder.RequestedDate, d
                          dbo.OrderCategoryDetailHistory.OrderCategoryDetailFk, dbo.PartManteinance.PartManteinanceId, dbo.PartManteinance.SerialNumber, dbo.PartManteinance.Comments AS PartManteinanceComments, 
                          dbo.PartManteinance.OrderCategoryDetailFk AS PartManteinanceOrderCatgoryDetailFk, dbo.PartManteinance.ParfFk, dbo.PartReplacement.PartReplacementId, 
                          dbo.PartReplacement.SerialNumber AS PartReplacementSerialNumber, dbo.PartReplacement.Comments AS PartReplacementComments, 
-                         dbo.PartReplacement.OrderCategoryDetailFk AS PartReplacementOrderCategoryDetalFk, dbo.PartReplacement.PartFk
+                         dbo.PartReplacement.OrderCategoryDetailFk AS PartReplacementOrderCategoryDetalFk, dbo.PartReplacement.PartFk, Part_1.PartId AS PartmanteinancePartId, Part_1.Name AS PartmanteinancePartName, 
+                         dbo.Part.PartId AS PartReplacementPartId, dbo.Part.Name AS PartReplacementPartName, dbo.PartManufacturer.ManufacturerName
 FROM            dbo.ServiceOrder INNER JOIN
                          dbo.Invoice ON dbo.ServiceOrder.InvoiceFk = dbo.Invoice.InvoiceId INNER JOIN
                          dbo.AutomotiveTechnicianLead ON dbo.ServiceOrder.AutomotiveTechnicianLeadFk = dbo.AutomotiveTechnicianLead.AutomotiveTechnicianLeadId INNER JOIN
@@ -34,7 +35,10 @@ FROM            dbo.ServiceOrder INNER JOIN
                          dbo.OrderCategoryDetail ON dbo.ServiceOrderCategory.ServiceOrderCategoryId = dbo.OrderCategoryDetail.ServiceOrderCategoryFk INNER JOIN
                          dbo.OrderCategoryDetailHistory ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.OrderCategoryDetailHistory.OrderCategoryDetailFk INNER JOIN
                          dbo.PartManteinance ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartManteinance.OrderCategoryDetailFk INNER JOIN
-                         dbo.PartReplacement ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartReplacement.OrderCategoryDetailFk
+                         dbo.PartReplacement ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartReplacement.OrderCategoryDetailFk INNER JOIN
+                         dbo.Part ON dbo.PartReplacement.PartFk = dbo.Part.PartId INNER JOIN
+                         dbo.Part AS Part_1 ON dbo.PartManteinance.ParfFk = Part_1.PartId INNER JOIN
+                         dbo.PartManufacturer ON dbo.Part.PartManufacturerFk = dbo.PartManufacturer.PartManufacturerId AND Part_1.PartManufacturerFk = dbo.PartManufacturer.PartManufacturerId
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 3, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
 
@@ -136,6 +140,36 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'          
             DisplayFlags = 280
             TopColumn = 1
          End
+         Begin Table = "Part_1"
+            Begin Extent = 
+               Top = 663
+               Left = 79
+               Bottom = 793
+               Right = 273
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "Part"
+            Begin Extent = 
+               Top = 693
+               Left = 798
+               Bottom = 823
+               Right = 992
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "PartManufacturer"
+            Begin Extent = 
+               Top = 790
+               Left = 450
+               Bottom = 886
+               Right = 643
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
       End
    End
    Begin SQLPane = 
@@ -155,41 +189,9 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'          
          Width = 1500
          Width = 1155
          Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 15', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+        ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
 
 
@@ -262,7 +264,7 @@ Begin DesignProperties =
    End
    Begin DiagramPane = 
       Begin Origin = 
-         Top = -576
+         Top = -672
          Left = 0
       End
       Begin Tables = 
@@ -337,8 +339,44 @@ Begin DesignProperties =
 
 
 
+
+
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N'00
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N' Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
          Width = 1500
          Width = 1500
          Width = 1500
@@ -392,4 +430,6 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N'00
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
