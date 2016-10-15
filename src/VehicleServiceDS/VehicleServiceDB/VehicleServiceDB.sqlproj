@@ -65,9 +65,9 @@
     <Folder Include="DataBase\dbo\Tables" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="DataBase\dbo\Stored Procedures\CreateServiceOrder.sql" />
     <Build Include="DataBase\dbo\Tables\AutomotiveTechnician.sql" />
     <Build Include="DataBase\dbo\Tables\AutomotiveTechnicianLead.sql" />
     <Build Include="DataBase\dbo\Tables\Category.sql" />
@@ -90,5 +90,7 @@
     <Build Include="DataBase\dbo\Tables\VehicleBrand.sql" />
     <Build Include="DataBase\dbo\Tables\VehicleModel.sql" />
     <Build Include="dbo\Views\VehicleServiceComplete.sql" />
+    <Build Include="dbo\Stored Procedures\uspVehicleServicecomplete.sql" />
+    <Build Include="dbo\Stored Procedures\uspCreateServiceOrder.sql" />
   </ItemGroup>
 </Project>
