@@ -19,7 +19,8 @@ SELECT        dbo.ServiceOrder.ServiceOrderId, dbo.ServiceOrder.RequestedDate, d
                          dbo.PartManteinance.OrderCategoryDetailFk AS PartManteinanceOrderCatgoryDetailFk, dbo.PartManteinance.ParfFk, dbo.PartReplacement.PartReplacementId, 
                          dbo.PartReplacement.SerialNumber AS PartReplacementSerialNumber, dbo.PartReplacement.Comments AS PartReplacementComments, 
                          dbo.PartReplacement.OrderCategoryDetailFk AS PartReplacementOrderCategoryDetalFk, dbo.PartReplacement.PartFk, Part_1.PartId AS PartmanteinancePartId, Part_1.Name AS PartmanteinancePartName, 
-                         dbo.Part.PartId AS PartReplacementPartId, dbo.Part.Name AS PartReplacementPartName, dbo.PartManufacturer.ManufacturerName
+                         dbo.Part.PartId AS PartReplacementPartId, dbo.Part.Name AS PartReplacementPartName, dbo.PartManufacturer.ManufacturerName AS ManufacturerNameManteinance, 
+                         PartManufacturer_1.ManufacturerName AS ManufacturerNameReplacement
 FROM            dbo.ServiceOrder INNER JOIN
                          dbo.Invoice ON dbo.ServiceOrder.InvoiceFk = dbo.Invoice.InvoiceId INNER JOIN
                          dbo.AutomotiveTechnicianLead ON dbo.ServiceOrder.AutomotiveTechnicianLeadFk = dbo.AutomotiveTechnicianLead.AutomotiveTechnicianLeadId INNER JOIN
@@ -38,7 +39,8 @@ FROM            dbo.ServiceOrder INNER JOIN
                          dbo.PartReplacement ON dbo.OrderCategoryDetail.OrderCategoryDetailId = dbo.PartReplacement.OrderCategoryDetailFk INNER JOIN
                          dbo.Part ON dbo.PartReplacement.PartFk = dbo.Part.PartId INNER JOIN
                          dbo.Part AS Part_1 ON dbo.PartManteinance.ParfFk = Part_1.PartId INNER JOIN
-                         dbo.PartManufacturer ON dbo.Part.PartManufacturerFk = dbo.PartManufacturer.PartManufacturerId AND Part_1.PartManufacturerFk = dbo.PartManufacturer.PartManufacturerId
+                         dbo.PartManufacturer ON Part_1.PartManufacturerFk = dbo.PartManufacturer.PartManufacturerId INNER JOIN
+                         dbo.PartManufacturer AS PartManufacturer_1 ON dbo.Part.PartManufacturerFk = PartManufacturer_1.PartManufacturerId
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 3, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
 
@@ -162,10 +164,20 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'          
          End
          Begin Table = "PartManufacturer"
             Begin Extent = 
-               Top = 790
-               Left = 450
-               Bottom = 886
-               Right = 643
+               Top = 780
+               Left = 303
+               Bottom = 876
+               Right = 496
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "PartManufacturer_1"
+            Begin Extent = 
+               Top = 775
+               Left = 575
+               Bottom = 871
+               Right = 768
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -177,19 +189,9 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'          
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
-      Begin ColumnWidths = 78
-         Width = 284
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1500
-         Width = 1155
-         Width = 1500
-        ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+      Begin Colum', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
 
 
@@ -342,7 +344,19 @@ Begin DesignProperties =
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N' Width = 1500
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N'nWidths = 78
+         Width = 284
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1155
+         Width = 1500
+         Width = 1500
          Width = 1500
          Width = 1500
          Width = 1500
@@ -430,6 +444,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane3', @value = N' Width = 1
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VehicleServiceComplete';
+
+
 
 
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreateServiceOrder]
+﻿CREATE PROCEDURE [dbo].[uspCreateServiceOrder]
 AS
 BEGIN
 	
